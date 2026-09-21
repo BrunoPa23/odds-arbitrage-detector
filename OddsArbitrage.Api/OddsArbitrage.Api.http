@@ -1,6 +1,3 @@
 @OddsArbitrage.Api_HostAddress = http://localhost:5162
 
-GET {{OddsArbitrage.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
 ###
