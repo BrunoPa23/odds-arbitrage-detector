@@ -1,3 +1,7 @@
 @OddsArbitrage.Api_HostAddress = http://localhost:5162
 
+# Consume 1 request de The Odds API por deporte (luego se cachea)
+GET {{OddsArbitrage.Api_HostAddress}}/api/partidos?deporte=soccer_epl
+Accept: application/json
+
 ###
