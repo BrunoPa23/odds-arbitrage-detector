@@ -12,12 +12,15 @@ builder.Services
     .ValidateOnStart();
 
 // Sin politica de reintentos a proposito: cada reintento gasta cuota de la API
-builder.Services.AddHttpClient<IOddsApiService, OddsApiService>((sp, client) =>
+builder.Services.AddHttpClient<OddsApiService>((sp, client) =>
 {
     var opciones = sp.GetRequiredService<IOptions<OddsApiOptions>>().Value;
     client.BaseAddress = new Uri(opciones.BaseUrl);
     client.Timeout = TimeSpan.FromSeconds(15);
 });
+
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IOddsApiService, OddsApiServiceConCache>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
