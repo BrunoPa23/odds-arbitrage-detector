@@ -1,0 +1,57 @@
+<section class="pagina">
+  <h1>Partidos</h1>
+
+  <div class="filtros-simples">
+    <label>
+      <span>Deporte</span>
+      <select [(ngModel)]="deporte" name="deporte">
+        @for (opcion of deportes; track opcion.clave) {
+          <option [value]="opcion.clave">{{ opcion.nombre }}</option>
+        }
+      </select>
+    </label>
+    <button type="button" (click)="onBuscar()">Buscar</button>
+  </div>
+
+  @if (cargando()) {
+    <p class="estado estado--cargando">Buscando partidos...</p>
+  } @else if (error()) {
+    <p class="estado estado--error">{{ error() }}</p>
+  } @else if (!haBuscado()) {
+    <p class="estado">Elegi un deporte y presiona "Buscar".</p>
+  } @else if (partidos().length === 0) {
+    <p class="estado">No se encontraron partidos para este deporte.</p>
+  } @else {
+    <div class="lista-partidos">
+      @for (partido of partidos(); track partido.id) {
+        <article class="partido">
+          <header class="partido__cabecera">
+            <h2>{{ partido.equipoLocal }} vs {{ partido.equipoVisitante }}</h2>
+            <span>{{ partido.liga }} · {{ partido.fechaInicio | date: 'short' }}</span>
+          </header>
+
+          <table class="tabla-cuotas">
+            <thead>
+              <tr>
+                <th>Casa</th>
+                <th>Resultado</th>
+                <th>Cuota</th>
+                <th>Actualizado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (cuota of partido.cuotas; track cuota.casa.clave + cuota.resultado) {
+                <tr>
+                  <td>{{ cuota.casa.nombre }}</td>
+                  <td>{{ cuota.resultado }}</td>
+                  <td>{{ cuota.valor | number: '1.2-2' }}</td>
+                  <td>{{ cuota.ultimaActualizacion | date: 'short' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </article>
+      }
+    </div>
+  }
+</section>

@@ -1,0 +1,60 @@
+@if (oportunidades().length === 0) {
+  <p class="tabla-vacia">No hay oportunidades de arbitraje para este deporte en este momento.</p>
+} @else {
+  <table class="tabla-oportunidades">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Partido</th>
+        <th>Liga</th>
+        <th>Fecha</th>
+        <th>Suma prob.</th>
+        <th>Margen</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (oportunidad of oportunidades(); track oportunidad.partidoId) {
+        <tr class="fila-oportunidad" (click)="alternarExpansion(oportunidad.partidoId)">
+          <td class="fila-oportunidad__icono">{{ estaExpandida(oportunidad.partidoId) ? '-' : '+' }}</td>
+          <td>{{ oportunidad.equipoLocal }} vs {{ oportunidad.equipoVisitante }}</td>
+          <td>{{ oportunidad.liga }}</td>
+          <td>{{ oportunidad.fechaInicio | date: 'short' }}</td>
+          <td>{{ oportunidad.sumaProbabilidadesImplicitas | percent: '1.2-2' }}</td>
+          <td><span [class]="claseMargen(oportunidad.margenPorcentaje)">{{ oportunidad.margenPorcentaje | number: '1.2-2' }}%</span></td>
+        </tr>
+        @if (estaExpandida(oportunidad.partidoId)) {
+          <tr class="fila-detalle">
+            <td [attr.colspan]="6">
+              <table class="tabla-reparto">
+                <thead>
+                  <tr>
+                    <th>Resultado</th>
+                    <th>Casa</th>
+                    <th>Cuota</th>
+                    <th>Stake</th>
+                    <th>Retorno</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (apuesta of oportunidad.reparto.apuestas; track apuesta.cuota.casa.clave) {
+                    <tr>
+                      <td>{{ apuesta.cuota.resultado }}</td>
+                      <td>{{ apuesta.cuota.casa.nombre }}</td>
+                      <td>{{ apuesta.cuota.valor | number: '1.2-2' }}</td>
+                      <td>{{ apuesta.stake | currency: 'USD' }}</td>
+                      <td>{{ apuesta.retorno | currency: 'USD' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+              <p class="ganancia-garantizada">
+                Ganancia garantizada: {{ oportunidad.reparto.gananciaGarantizada | currency: 'USD' }}
+                (retorno garantizado: {{ oportunidad.reparto.retornoGarantizado | currency: 'USD' }})
+              </p>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+}

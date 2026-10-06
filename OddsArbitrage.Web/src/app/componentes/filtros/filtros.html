@@ -1,0 +1,17 @@
+<div class="filtros">
+  <label class="filtros__campo">
+    <span>Deporte</span>
+    <select [(ngModel)]="deporte" name="deporte">
+      @for (opcion of deportes; track opcion.clave) {
+        <option [value]="opcion.clave">{{ opcion.nombre }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="filtros__campo">
+    <span>Stake total</span>
+    <input type="number" min="1" step="1" [(ngModel)]="stake" name="stake" />
+  </label>
+
+  <button type="button" class="filtros__boton" (click)="onBuscar()">Buscar</button>
+</div>

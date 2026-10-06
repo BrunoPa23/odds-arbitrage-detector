@@ -315,6 +315,10 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+# Angular (OddsArbitrage.Web)
+OddsArbitrage.Web/dist/
+OddsArbitrage.Web/.angular/
+
 # Visual Studio 6 build log
 *.plg
 
