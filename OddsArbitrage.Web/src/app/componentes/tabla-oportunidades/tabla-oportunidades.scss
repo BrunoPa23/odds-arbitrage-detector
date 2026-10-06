@@ -1,0 +1,76 @@
+.tabla-vacia {
+  opacity: 0.7;
+  padding: 1rem 0;
+}
+
+.tabla-oportunidades {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+}
+
+.fila-oportunidad {
+  cursor: pointer;
+
+  td {
+    padding: 0.6rem 0.75rem;
+    border-top: 1px solid var(--color-borde);
+  }
+
+  &__icono {
+    width: 1.5rem;
+    text-align: center;
+    opacity: 0.6;
+  }
+}
+
+.fila-detalle td {
+  padding: 0 0.75rem 1rem 2.25rem;
+}
+
+.tabla-reparto {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}
+
+.ganancia-garantizada {
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  &--alto {
+    background: var(--color-margen-alto-bg);
+    color: var(--color-margen-alto-fg);
+  }
+
+  &--medio {
+    background: var(--color-margen-medio-bg);
+    color: var(--color-margen-medio-fg);
+  }
+
+  &--bajo {
+    background: var(--color-margen-bajo-bg);
+    color: var(--color-margen-bajo-fg);
+  }
+}
