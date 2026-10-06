@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
+using OddsArbitrage.Api.Filters;
+using OddsArbitrage.Api.Services.Arbitraje;
 using OddsArbitrage.Api.Services.OddsApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,8 +24,9 @@ builder.Services.AddHttpClient<OddsApiService>((sp, client) =>
 
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IOddsApiService, OddsApiServiceConCache>();
+builder.Services.AddSingleton<IDetectorArbitraje, DetectorArbitraje>();
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(o => o.Filters.Add<OddsApiExceptionFilter>())
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
