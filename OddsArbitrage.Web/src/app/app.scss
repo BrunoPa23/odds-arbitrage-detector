@@ -1,0 +1,39 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-borde);
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  &__titulo {
+    font-weight: 700;
+  }
+
+  &__nav {
+    display: flex;
+    gap: 1rem;
+
+    a {
+      text-decoration: none;
+      opacity: 0.75;
+
+      &.activo {
+        opacity: 1;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__contenido {
+    flex: 1;
+    padding: 1.5rem;
+  }
+}

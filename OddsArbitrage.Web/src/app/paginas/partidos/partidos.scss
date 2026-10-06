@@ -1,0 +1,83 @@
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.filtros-simples {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+  }
+
+  button {
+    height: 2.4rem;
+    padding: 0 1.25rem;
+    cursor: pointer;
+  }
+}
+
+.estado {
+  padding: 1rem;
+  opacity: 0.8;
+
+  &--error {
+    color: var(--color-error);
+    opacity: 1;
+  }
+}
+
+.lista-partidos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.partido {
+  border: 1px solid var(--color-borde);
+  border-radius: 0.5rem;
+  padding: 1rem;
+
+  &__cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    span {
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+  }
+}
+
+.tabla-cuotas {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    border-top: 1px solid var(--color-borde);
+  }
+
+  th {
+    border-top: none;
+    opacity: 0.7;
+  }
+}
