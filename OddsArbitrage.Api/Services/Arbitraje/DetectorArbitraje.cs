@@ -4,9 +4,11 @@ namespace OddsArbitrage.Api.Services.Arbitraje;
 
 public sealed class DetectorArbitraje : IDetectorArbitraje
 {
+    public const decimal StakePorDefecto = 100m;
+
     private static readonly int CantidadResultados1X2 = Enum.GetValues<ResultadoPartido>().Length;
 
-    public OportunidadArbitraje? Evaluar(Partido partido)
+    public OportunidadArbitraje? Evaluar(Partido partido, decimal stakeTotal = StakePorDefecto)
     {
         var mejoresCuotas = SeleccionarMejoresCuotas(partido.Cuotas);
 
@@ -31,13 +33,14 @@ public sealed class DetectorArbitraje : IDetectorArbitraje
             FechaInicio = partido.FechaInicio,
             MejoresCuotas = mejoresCuotas,
             SumaProbabilidadesImplicitas = Math.Round(sumaProbabilidades, 6),
-            MargenPorcentaje = Math.Round((1m / sumaProbabilidades - 1m) * 100m, 2)
+            MargenPorcentaje = Math.Round((1m / sumaProbabilidades - 1m) * 100m, 2),
+            Reparto = RepartidorStake.Calcular(mejoresCuotas, stakeTotal)
         };
     }
 
-    public IReadOnlyList<OportunidadArbitraje> Detectar(IEnumerable<Partido> partidos)
+    public IReadOnlyList<OportunidadArbitraje> Detectar(IEnumerable<Partido> partidos, decimal stakeTotal = StakePorDefecto)
         => partidos
-            .Select(Evaluar)
+            .Select(p => Evaluar(p, stakeTotal))
             .OfType<OportunidadArbitraje>()
             .OrderByDescending(o => o.MargenPorcentaje)
             .ToList();

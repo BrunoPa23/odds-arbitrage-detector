@@ -16,4 +16,7 @@ public sealed record OportunidadArbitraje
 
     // Ganancia garantizada expresada como porcentaje del stake total (ej. 2.5 equivale a 2.5 %)
     public required decimal MargenPorcentaje { get; init; }
+
+    // Como repartir el stake entre las mejores cuotas para asegurar la ganancia
+    public required RepartoStake Reparto { get; init; }
 }
