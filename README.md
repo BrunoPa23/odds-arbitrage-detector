@@ -1,5 +1,6 @@
 # Odds Arbitrage Detector
-n[![CI](https://github.com/BrunoPa23/odds-arbitrage-detector/actions/workflows/ci.yml/badge.svg)](https://github.com/BrunoPa23/odds-arbitrage-detector/actions/workflows/ci.yml)
+
+[![CI](https://github.com/BrunoPa23/odds-arbitrage-detector/actions/workflows/ci.yml/badge.svg)](https://github.com/BrunoPa23/odds-arbitrage-detector/actions/workflows/ci.yml)
 
 Detecta oportunidades de arbitraje entre casas de apuestas, comparando cuotas del mismo partido en distintas casas en el mercado 1X2 (local, empate, visitante). Un arbitraje existe cuando la suma de las probabilidades implicitas de las mejores cuotas es menor al 100%; en ese caso, repartiendo el stake de forma proporcional se asegura una ganancia sin importar el resultado.
 
