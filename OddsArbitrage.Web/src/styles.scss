@@ -1,1 +1,87 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales: tema oscuro por defecto para toda la aplicacion */
+
+:root {
+  --color-fondo: #12161c;
+  --color-superficie: #1a2029;
+  --color-texto: #e6e9ef;
+  --color-texto-tenue: #9aa4b2;
+  --color-borde: #2a3240;
+  --color-primario: #4f8cff;
+  --color-primario-texto: #0b1220;
+  --color-error: #ff6b6b;
+
+  --color-margen-alto-bg: #163b2b;
+  --color-margen-alto-fg: #4ade80;
+  --color-margen-medio-bg: #3a3415;
+  --color-margen-medio-fg: #facc15;
+  --color-margen-bajo-bg: #3a1f1f;
+  --color-margen-bajo-fg: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+}
+
+a {
+  color: var(--color-primario);
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 0 0 0.5rem;
+}
+
+h2 {
+  font-size: 1.05rem;
+}
+
+select,
+input,
+button {
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+  border-radius: 0.35rem;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.6rem;
+}
+
+button {
+  background: var(--color-primario);
+  color: var(--color-primario-texto);
+  border-color: var(--color-primario);
+  font-weight: 600;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+table {
+  color: var(--color-texto);
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
