@@ -23,4 +23,8 @@ public sealed class OddsApiOptions
     // Umbral de requests restantes a partir del cual se loguea un warning
     [Range(0, 500)]
     public int UmbralAlertaCuota { get; set; } = 50;
+
+    // Tiempo que se reutiliza una respuesta antes de volver a consultar la API
+    [Range(1, 1440)]
+    public int MinutosCache { get; set; } = 30;
 }

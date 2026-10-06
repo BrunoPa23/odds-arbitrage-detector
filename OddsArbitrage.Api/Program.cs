@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
 using OddsArbitrage.Api.Services.OddsApi;
 
@@ -12,14 +13,18 @@ builder.Services
     .ValidateOnStart();
 
 // Sin politica de reintentos a proposito: cada reintento gasta cuota de la API
-builder.Services.AddHttpClient<IOddsApiService, OddsApiService>((sp, client) =>
+builder.Services.AddHttpClient<OddsApiService>((sp, client) =>
 {
     var opciones = sp.GetRequiredService<IOptions<OddsApiOptions>>().Value;
     client.BaseAddress = new Uri(opciones.BaseUrl);
     client.Timeout = TimeSpan.FromSeconds(15);
 });
 
-builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IOddsApiService, OddsApiServiceConCache>();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
