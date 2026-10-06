@@ -25,30 +25,13 @@ public class OportunidadesController(
         [FromQuery, Range(1, 1_000_000)] decimal stake = DetectorArbitraje.StakePorDefecto,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var partidos = await oddsApiService.ObtenerPartidosAsync(deporte, cancellationToken);
-            var oportunidades = detectorArbitraje.Detectar(partidos, stake);
+        var partidos = await oddsApiService.ObtenerPartidosAsync(deporte, cancellationToken);
+        var oportunidades = detectorArbitraje.Detectar(partidos, stake);
 
-            logger.LogInformation(
-                "Se evaluaron {Partidos} partidos y se detectaron {Oportunidades} oportunidades",
-                partidos.Count, oportunidades.Count);
+        logger.LogInformation(
+            "Se evaluaron {Partidos} partidos y se detectaron {Oportunidades} oportunidades",
+            partidos.Count, oportunidades.Count);
 
-            return Ok(oportunidades);
-        }
-        catch (HttpRequestException ex)
-        {
-            logger.LogError(ex, "The Odds API respondio con error ({StatusCode})", ex.StatusCode);
-            return Problem(
-                statusCode: StatusCodes.Status502BadGateway,
-                title: "No se pudieron obtener las cuotas de The Odds API");
-        }
-        catch (TaskCanceledException) when (!cancellationToken.IsCancellationRequested)
-        {
-            logger.LogError("The Odds API no respondio a tiempo");
-            return Problem(
-                statusCode: StatusCodes.Status504GatewayTimeout,
-                title: "The Odds API no respondio a tiempo");
-        }
+        return Ok(oportunidades);
     }
 }
