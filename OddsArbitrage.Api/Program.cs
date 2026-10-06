@@ -8,6 +8,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+const string PoliticaCorsWeb = "PoliticaCorsWeb";
+var origenesPermitidos = builder.Configuration.GetSection("Cors:OrigenesPermitidos").Get<string[]>() ?? [];
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(PoliticaCorsWeb, policy =>
+    {
+        policy.WithOrigins(origenesPermitidos)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services
     .AddOptions<OddsApiOptions>()
     .Bind(builder.Configuration.GetSection(OddsApiOptions.Seccion))
@@ -40,6 +53,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(PoliticaCorsWeb);
 
 app.UseAuthorization();
 
