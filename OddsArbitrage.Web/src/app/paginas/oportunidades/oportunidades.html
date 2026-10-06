@@ -1,0 +1,15 @@
+<section class="pagina">
+  <h1>Oportunidades de arbitraje</h1>
+
+  <app-filtros (buscar)="onBuscar($event)" />
+
+  @if (cargando()) {
+    <p class="estado estado--cargando">Buscando oportunidades...</p>
+  } @else if (error()) {
+    <p class="estado estado--error">{{ error() }}</p>
+  } @else if (!haBuscado()) {
+    <p class="estado">Elegi un deporte y un stake, despues presiona "Buscar".</p>
+  } @else {
+    <app-tabla-oportunidades [oportunidades]="oportunidades()" />
+  }
+</section>
