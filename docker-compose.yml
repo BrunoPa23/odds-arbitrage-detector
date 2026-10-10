@@ -1,0 +1,17 @@
+# Levanta la API y la web con un comando: docker compose up --build
+services:
+  api:
+    build: ./OddsArbitrage.Api
+    environment:
+      TheOddsApi__ApiKey: ${ODDS_API_KEY:?Define ODDS_API_KEY en el archivo .env (ver .env.example)}
+    ports:
+      - "5162:8080"
+    restart: unless-stopped
+
+  web:
+    build: ./OddsArbitrage.Web
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    restart: unless-stopped
