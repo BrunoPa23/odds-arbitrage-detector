@@ -26,3 +26,41 @@ jobs:
 
       - name: Ejecutar tests
         run: dotnet test --no-build -c Release
+
+  docker:
+    runs-on: ubuntu-latest
+    env:
+      # Clave falsa: el job nunca llama a The Odds API, solo la necesita para arrancar
+      ODDS_API_KEY: sin-clave-en-ci
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Construir las imagenes
+        run: docker compose build
+
+      - name: Levantar la API y la web
+        run: docker compose up -d --wait
+
+      - name: Verificar que la web responde
+        run: curl -fsS --retry 10 --retry-all-errors --retry-delay 2 http://localhost:8080/ | grep -q "<app-root>"
+
+      - name: Verificar que nginx llega a la API
+        # Una ruta inexistente debe dar 404 de la API (no 502 de nginx) y no gasta cuota
+        run: |
+          for i in $(seq 1 15); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/no-existe)
+            [ "$code" = "404" ] && break
+            sleep 2
+          done
+          echo "HTTP $code"
+          test "$code" = "404"
+
+      - name: Logs de los contenedores
+        if: failure()
+        run: docker compose logs
+
+      - name: Bajar el stack
+        if: always()
+        run: docker compose down

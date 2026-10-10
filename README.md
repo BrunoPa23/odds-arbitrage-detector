@@ -74,8 +74,24 @@ Para correr los tests unitarios:
 npm test
 ```
 
+## Como correr todo con Docker Compose
+
+Requisitos: Docker con Docker Compose.
+
+1. Copia `.env.example` como `.env` y pon tu API key de The Odds API (el archivo `.env` no se sube al repositorio).
+2. Levanta la API y la web:
+
+```bash
+docker compose up --build
+```
+
+- Web: `http://localhost:8080` (nginx sirve el frontend y reenvia `/api` a la API, asi que no hace falta configurar CORS).
+- API: `http://localhost:5162` (por ejemplo `/api/oportunidades`).
+
+Cada consulta que no este en cache gasta cuota de The Odds API; no dejes la web abierta recargando sin necesidad.
+
 ## Estado del proyecto
 
-Desarrollo por sprints cortos (metodologia agil, backlog MoSCoW). MVP funcional: backend con datos reales de The Odds API, algoritmo de deteccion de arbitraje y frontend en Angular que muestra las oportunidades y los partidos.
+Desarrollo por sprints cortos (metodologia agil, backlog MoSCoW). MVP completo: backend con datos reales de The Odds API, algoritmo de deteccion de arbitraje, frontend en Angular que muestra las oportunidades y los partidos, tests unitarios con CI en GitHub Actions y arranque con Docker Compose.
 
-Pendiente (post MVP): alertas en tiempo real (SignalR), historico en base de datos, jobs automaticos en background, tests de integracion, Docker y CI/CD.
+Pendiente (post MVP): alertas en tiempo real (SignalR), historico en base de datos, jobs automaticos en background y tests de integracion.
