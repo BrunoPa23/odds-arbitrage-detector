@@ -45,10 +45,11 @@ public sealed class DetectorArbitraje : IDetectorArbitraje
             .OrderByDescending(o => o.MargenPorcentaje)
             .ToList();
 
-    // Para cada resultado (Local, Empate, Visitante) toma la cuota mas alta entre todas las casas
+    // Para cada resultado (Local, Empate, Visitante) toma la cuota mas alta entre todas las casas.
+    // Solo cuenta el mercado ganador; totales y handicap tienen su propia logica
     private static List<Cuota> SeleccionarMejoresCuotas(IEnumerable<Cuota> cuotas)
         => cuotas
-            .Where(c => c.Valor > 1m)
+            .Where(c => c.Mercado == TipoMercado.Ganador && c.Valor > 1m)
             .GroupBy(c => c.Resultado)
             .Select(g => g.MaxBy(c => c.Valor)!)
             .OrderBy(c => c.Resultado)

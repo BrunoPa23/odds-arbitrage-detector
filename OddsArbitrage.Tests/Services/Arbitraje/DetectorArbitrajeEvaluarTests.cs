@@ -102,6 +102,24 @@ public class DetectorArbitrajeEvaluarTests
     }
 
     [Fact]
+    public void Evaluar_IgnoraCuotasDeOtrosMercados()
+    {
+        // Arrange: la cuota alta de Visitante es de handicap, no del mercado ganador
+        var partido = new PartidoBuilder()
+            .ConCuota("casaA", ResultadoPartido.Local, 2.00m)
+            .ConCuota("casaA", ResultadoPartido.Empate, 3.00m)
+            .ConCuota("casaA", ResultadoPartido.Visitante, 3.00m)
+            .ConCuota("casaB", TipoMercado.Handicap, 1.5m, ResultadoPartido.Visitante, 9.00m)
+            .Build();
+
+        // Act
+        var oportunidad = _detector.Evaluar(partido);
+
+        // Assert
+        Assert.Null(oportunidad);
+    }
+
+    [Fact]
     public void Evaluar_MargenCalculadoCorrectamente_ConRedondeoADosDecimales()
     {
         // Arrange: suma de probabilidades = 0.95, margen esperado = (1/0.95 - 1) x 100 = 5.26...

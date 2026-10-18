@@ -1,4 +1,5 @@
 export * from './resultado-partido';
+export * from './tipo-mercado';
 export * from './casa-de-apuestas';
 export * from './cuota';
 export * from './partido';

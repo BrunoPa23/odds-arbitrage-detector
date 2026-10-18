@@ -40,7 +40,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (cuota of partido.cuotas; track cuota.casa.clave + cuota.resultado) {
+              @for (cuota of partido.cuotas; track cuota.casa.clave + cuota.mercado + cuota.linea + cuota.resultado) {
                 <tr>
                   <td>{{ cuota.casa.nombre }}</td>
                   <td>{{ cuota.resultado }}</td>

@@ -21,6 +21,8 @@ function crearOportunidadMock(partidoId: string): OportunidadArbitraje {
         {
           cuota: {
             casa: { clave: 'bet365', nombre: 'Bet365' },
+            mercado: 'Ganador',
+            linea: null,
             resultado: 'Local',
             valor: 2.1,
             ultimaActualizacion: '2026-10-10T19:00:00Z',
