@@ -6,7 +6,7 @@ namespace OddsArbitrage.Tests.Builders;
 // util para probar ProbabilidadImplicita y RepartidorStake de forma aislada.
 public static class CuotaDePrueba
 {
-    public static Cuota Crear(ResultadoPartido resultado, decimal valor, string casaClave = "casa-1")
+    public static Cuota Crear(ResultadoCuota resultado, decimal valor, string casaClave = "casa-1")
         => new()
         {
             Casa = new CasaDeApuestas { Clave = casaClave, Nombre = casaClave },

@@ -13,9 +13,9 @@ public class DetectorArbitrajeEvaluarTests
     {
         // Arrange
         var partido = new PartidoBuilder()
-            .ConCuota("casaA", ResultadoPartido.Local, 2.00m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 4.00m)
-            .ConCuota("casaB", ResultadoPartido.Visitante, 5.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 4.00m)
+            .ConCuota("casaB", ResultadoCuota.Visitante, 5.00m)
             .Build();
 
         // Act
@@ -31,9 +31,9 @@ public class DetectorArbitrajeEvaluarTests
     {
         // Arrange
         var partido = new PartidoBuilder()
-            .ConCuota("casaA", ResultadoPartido.Local, 1.50m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 3.00m)
-            .ConCuota("casaA", ResultadoPartido.Visitante, 3.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 1.50m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 3.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 3.00m)
             .Build();
 
         // Act
@@ -48,8 +48,8 @@ public class DetectorArbitrajeEvaluarTests
     {
         // Arrange: no hay ninguna cuota para Visitante
         var partido = new PartidoBuilder()
-            .ConCuota("casaA", ResultadoPartido.Local, 2.00m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 4.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 4.00m)
             .Build();
 
         // Act
@@ -64,10 +64,10 @@ public class DetectorArbitrajeEvaluarTests
     {
         // Arrange
         var partido = new PartidoBuilder()
-            .ConCuota("casaA", ResultadoPartido.Local, 2.00m)
-            .ConCuota("casaB", ResultadoPartido.Local, 2.50m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 4.00m)
-            .ConCuota("casaA", ResultadoPartido.Visitante, 5.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaB", ResultadoCuota.Local, 2.50m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 4.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 5.00m)
             .Build();
 
         // Act
@@ -75,7 +75,7 @@ public class DetectorArbitrajeEvaluarTests
 
         // Assert
         Assert.NotNull(oportunidad);
-        var cuotaLocal = oportunidad!.MejoresCuotas.Single(c => c.Resultado == ResultadoPartido.Local);
+        var cuotaLocal = oportunidad!.MejoresCuotas.Single(c => c.Resultado == ResultadoCuota.Local);
         Assert.Equal(2.50m, cuotaLocal.Valor);
         Assert.Equal("casaB", cuotaLocal.Casa.Clave);
     }
@@ -85,10 +85,10 @@ public class DetectorArbitrajeEvaluarTests
     {
         // Arrange: la cuota de 1.00 para Local no es valida y debe ser ignorada
         var partido = new PartidoBuilder()
-            .ConCuota("casaA", ResultadoPartido.Local, 1.00m)
-            .ConCuota("casaB", ResultadoPartido.Local, 2.00m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 4.00m)
-            .ConCuota("casaA", ResultadoPartido.Visitante, 5.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 1.00m)
+            .ConCuota("casaB", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 4.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 5.00m)
             .Build();
 
         // Act
@@ -96,9 +96,27 @@ public class DetectorArbitrajeEvaluarTests
 
         // Assert
         Assert.NotNull(oportunidad);
-        var cuotaLocal = oportunidad!.MejoresCuotas.Single(c => c.Resultado == ResultadoPartido.Local);
+        var cuotaLocal = oportunidad!.MejoresCuotas.Single(c => c.Resultado == ResultadoCuota.Local);
         Assert.Equal(2.00m, cuotaLocal.Valor);
         Assert.Equal("casaB", cuotaLocal.Casa.Clave);
+    }
+
+    [Fact]
+    public void Evaluar_IgnoraCuotasDeOtrosMercados()
+    {
+        // Arrange: la cuota alta de Visitante es de handicap, no del mercado ganador
+        var partido = new PartidoBuilder()
+            .ConCuota("casaA", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 3.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 3.00m)
+            .ConCuota("casaB", TipoMercado.Handicap, 1.5m, ResultadoCuota.Visitante, 9.00m)
+            .Build();
+
+        // Act
+        var oportunidad = _detector.Evaluar(partido);
+
+        // Assert
+        Assert.Null(oportunidad);
     }
 
     [Fact]
@@ -106,9 +124,9 @@ public class DetectorArbitrajeEvaluarTests
     {
         // Arrange: suma de probabilidades = 0.95, margen esperado = (1/0.95 - 1) x 100 = 5.26...
         var partido = new PartidoBuilder()
-            .ConCuota("casaA", ResultadoPartido.Local, 2.00m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 4.00m)
-            .ConCuota("casaA", ResultadoPartido.Visitante, 5.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 4.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 5.00m)
             .Build();
 
         // Act

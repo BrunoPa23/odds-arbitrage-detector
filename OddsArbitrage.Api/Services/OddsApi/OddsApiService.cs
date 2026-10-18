@@ -22,7 +22,7 @@ public sealed class OddsApiService(
         var url = $"v4/sports/{Uri.EscapeDataString(claveDeporte)}/odds" +
                   $"?apiKey={Uri.EscapeDataString(_opciones.ApiKey)}" +
                   $"&regions={Uri.EscapeDataString(_opciones.Region)}" +
-                  $"&markets={OddsApiMapper.MercadoH2H}" +
+                  $"&markets={Uri.EscapeDataString(string.Join(',', _opciones.MercadosAConsultar()))}" +
                   "&oddsFormat=decimal&dateFormat=iso";
 
         using var respuesta = await httpClient.GetAsync(url, cancellationToken);

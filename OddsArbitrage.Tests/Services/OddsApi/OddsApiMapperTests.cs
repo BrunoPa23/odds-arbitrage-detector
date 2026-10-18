@@ -28,7 +28,7 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: OddsApiMapper.MercadoH2H,
+                            Key: MercadosOddsApi.H2H,
                             LastUpdate: null,
                             Outcomes:
                             [
@@ -44,7 +44,7 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: OddsApiMapper.MercadoH2H,
+                            Key: MercadosOddsApi.H2H,
                             LastUpdate: null,
                             Outcomes:
                             [
@@ -67,21 +67,21 @@ public class OddsApiMapperTests
         Assert.Equal(6, partido.Cuotas.Count);
 
         var cuotaLocalCasaA = Assert.Single(partido.Cuotas,
-            c => c.Casa.Clave == "casaA" && c.Resultado == ResultadoPartido.Local);
+            c => c.Casa.Clave == "casaA" && c.Resultado == ResultadoCuota.Local);
         Assert.Equal(2.10m, cuotaLocalCasaA.Valor);
         Assert.Equal("Casa A", cuotaLocalCasaA.Casa.Nombre);
 
         var cuotaEmpateCasaB = Assert.Single(partido.Cuotas,
-            c => c.Casa.Clave == "casaB" && c.Resultado == ResultadoPartido.Empate);
+            c => c.Casa.Clave == "casaB" && c.Resultado == ResultadoCuota.Empate);
         Assert.Equal(3.50m, cuotaEmpateCasaB.Valor);
 
         var cuotaVisitanteCasaA = Assert.Single(partido.Cuotas,
-            c => c.Casa.Clave == "casaA" && c.Resultado == ResultadoPartido.Visitante);
+            c => c.Casa.Clave == "casaA" && c.Resultado == ResultadoCuota.Visitante);
         Assert.Equal(3.80m, cuotaVisitanteCasaA.Valor);
     }
 
     [Fact]
-    public void APartido_IgnoraMercadosQueNoSonH2H()
+    public void APartido_IgnoraMercadosNoSoportados()
     {
         // Arrange
         var evento = new EventDto(
@@ -100,9 +100,9 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: "totals",
+                            Key: "outrights",
                             LastUpdate: null,
-                            Outcomes: [new OutcomeDto("Over", 1.90m)])
+                            Outcomes: [new OutcomeDto("Equipo Local", 1.90m)])
                     ])
             ]);
 
@@ -133,7 +133,7 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: OddsApiMapper.MercadoH2H,
+                            Key: MercadosOddsApi.H2H,
                             LastUpdate: null,
                             Outcomes:
                             [
@@ -148,7 +148,7 @@ public class OddsApiMapperTests
 
         // Assert
         Assert.Single(partido.Cuotas);
-        Assert.Equal(ResultadoPartido.Local, partido.Cuotas[0].Resultado);
+        Assert.Equal(ResultadoCuota.Local, partido.Cuotas[0].Resultado);
     }
 
     [Fact]
@@ -172,7 +172,7 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: OddsApiMapper.MercadoH2H,
+                            Key: MercadosOddsApi.H2H,
                             LastUpdate: actualizacionMercado,
                             Outcomes: [new OutcomeDto("Equipo Local", 2.10m)])
                     ])

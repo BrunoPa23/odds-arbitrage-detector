@@ -14,16 +14,16 @@ public class DetectorArbitrajeDetectarTests
         // Arrange
         var partidoConArbitraje = new PartidoBuilder()
             .ConId("con-arbitraje")
-            .ConCuota("casaA", ResultadoPartido.Local, 2.00m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 4.00m)
-            .ConCuota("casaA", ResultadoPartido.Visitante, 5.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 4.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 5.00m)
             .Build();
 
         var partidoSinArbitraje = new PartidoBuilder()
             .ConId("sin-arbitraje")
-            .ConCuota("casaA", ResultadoPartido.Local, 1.50m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 3.00m)
-            .ConCuota("casaA", ResultadoPartido.Visitante, 3.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 1.50m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 3.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 3.00m)
             .Build();
 
         // Act
@@ -40,16 +40,16 @@ public class DetectorArbitrajeDetectarTests
         // Arrange
         var partidoMargenBajo = new PartidoBuilder()
             .ConId("margen-bajo")
-            .ConCuota("casaA", ResultadoPartido.Local, 2.00m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 3.00m)
-            .ConCuota("casaA", ResultadoPartido.Visitante, 7.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 3.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 7.00m)
             .Build();
 
         var partidoMargenAlto = new PartidoBuilder()
             .ConId("margen-alto")
-            .ConCuota("casaA", ResultadoPartido.Local, 2.00m)
-            .ConCuota("casaA", ResultadoPartido.Empate, 4.00m)
-            .ConCuota("casaA", ResultadoPartido.Visitante, 5.00m)
+            .ConCuota("casaA", ResultadoCuota.Local, 2.00m)
+            .ConCuota("casaA", ResultadoCuota.Empate, 4.00m)
+            .ConCuota("casaA", ResultadoCuota.Visitante, 5.00m)
             .Build();
 
         // Act: se pasan en orden inverso al esperado para verificar que Detectar realmente ordena
