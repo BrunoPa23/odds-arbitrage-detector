@@ -8,7 +8,12 @@ public sealed record OportunidadArbitraje
     public required string EquipoVisitante { get; init; }
     public required DateTimeOffset FechaInicio { get; init; }
 
-    // Mejor cuota disponible para cada resultado del mercado 1X2 (una por resultado)
+    public TipoMercado Mercado { get; init; } = TipoMercado.Ganador;
+
+    // Linea del mercado: el total en totales y la linea del local en handicap; null en el mercado ganador
+    public decimal? Linea { get; init; }
+
+    // Mejor cuota disponible para cada resultado del mercado (una por resultado)
     public required IReadOnlyList<Cuota> MejoresCuotas { get; init; }
 
     // Suma de probabilidades implicitas de las mejores cuotas; hay arbitraje cuando es menor a 1

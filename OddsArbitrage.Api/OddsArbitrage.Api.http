@@ -5,3 +5,9 @@ GET {{OddsArbitrage.Api_HostAddress}}/api/partidos?deporte=soccer_epl
 Accept: application/json
 
 ###
+
+# Reutiliza la cache de partidos; totales y handicap requieren activarlos en TheOddsApi:Mercados
+GET {{OddsArbitrage.Api_HostAddress}}/api/surebets?deporte=soccer_epl&mercado=Totales&margenMinimo=1&stake=100
+Accept: application/json
+
+###

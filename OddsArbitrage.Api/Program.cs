@@ -37,7 +37,9 @@ builder.Services.AddHttpClient<OddsApiService>((sp, client) =>
 
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IOddsApiService, OddsApiServiceConCache>();
-builder.Services.AddSingleton<IDetectorArbitraje, DetectorArbitraje>();
+builder.Services.AddSingleton<IDetectorSurebets, DetectorArbitraje>();
+builder.Services.AddSingleton<IDetectorSurebets, DetectorDosResultados>();
+builder.Services.AddSingleton<IBuscadorSurebets, BuscadorSurebets>();
 
 builder.Services.AddControllers(o => o.Filters.Add<OddsApiExceptionFilter>())
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

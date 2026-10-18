@@ -10,6 +10,8 @@ function crearOportunidadMock(partidoId: string): OportunidadArbitraje {
     equipoLocal: 'Equipo A',
     equipoVisitante: 'Equipo B',
     fechaInicio: '2026-10-10T20:00:00Z',
+    mercado: 'Ganador',
+    linea: null,
     mejoresCuotas: [],
     sumaProbabilidadesImplicitas: 0.95,
     margenPorcentaje: 5,

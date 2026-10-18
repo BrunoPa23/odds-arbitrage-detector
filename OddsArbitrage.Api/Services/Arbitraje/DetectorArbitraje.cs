@@ -2,13 +2,15 @@ using OddsArbitrage.Api.Domain;
 
 namespace OddsArbitrage.Api.Services.Arbitraje;
 
-public sealed class DetectorArbitraje : IDetectorArbitraje
+// Detector del mercado ganador (1X2): un partido tiene a lo sumo una surebet
+public sealed class DetectorArbitraje : IDetectorSurebets
 {
-    public const decimal StakePorDefecto = 100m;
-
     private static readonly IReadOnlyList<ResultadoCuota> Resultados1X2 = ResultadosPorMercado.De(TipoMercado.Ganador);
 
-    public OportunidadArbitraje? Evaluar(Partido partido, decimal stakeTotal = StakePorDefecto)
+    public IReadOnlyCollection<TipoMercado> Mercados { get; } = [TipoMercado.Ganador];
+
+    // Devuelve la oportunidad si el partido tiene arbitraje en el mercado 1X2, o null si no lo tiene
+    public OportunidadArbitraje? Evaluar(Partido partido, decimal stakeTotal = IDetectorSurebets.StakePorDefecto)
     {
         var mejoresCuotas = SeleccionarMejoresCuotas(partido.Cuotas);
 
@@ -18,27 +20,10 @@ public sealed class DetectorArbitraje : IDetectorArbitraje
             return null;
         }
 
-        var sumaProbabilidades = ProbabilidadImplicita.CalcularSuma(mejoresCuotas);
-        if (sumaProbabilidades >= 1m)
-        {
-            return null;
-        }
-
-        return new OportunidadArbitraje
-        {
-            PartidoId = partido.Id,
-            Liga = partido.Liga,
-            EquipoLocal = partido.EquipoLocal,
-            EquipoVisitante = partido.EquipoVisitante,
-            FechaInicio = partido.FechaInicio,
-            MejoresCuotas = mejoresCuotas,
-            SumaProbabilidadesImplicitas = Math.Round(sumaProbabilidades, 6),
-            MargenPorcentaje = Math.Round((1m / sumaProbabilidades - 1m) * 100m, 2),
-            Reparto = RepartidorStake.Calcular(mejoresCuotas, stakeTotal)
-        };
+        return ConstructorOportunidad.Crear(partido, TipoMercado.Ganador, linea: null, mejoresCuotas, stakeTotal);
     }
 
-    public IReadOnlyList<OportunidadArbitraje> Detectar(IEnumerable<Partido> partidos, decimal stakeTotal = StakePorDefecto)
+    public IReadOnlyList<OportunidadArbitraje> Detectar(IEnumerable<Partido> partidos, decimal stakeTotal = IDetectorSurebets.StakePorDefecto)
         => partidos
             .Select(p => Evaluar(p, stakeTotal))
             .OfType<OportunidadArbitraje>()
