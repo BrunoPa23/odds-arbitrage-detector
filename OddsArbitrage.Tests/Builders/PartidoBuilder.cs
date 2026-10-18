@@ -19,10 +19,10 @@ public sealed class PartidoBuilder
         return this;
     }
 
-    public PartidoBuilder ConCuota(string casaClave, ResultadoPartido resultado, decimal valor)
+    public PartidoBuilder ConCuota(string casaClave, ResultadoCuota resultado, decimal valor)
         => ConCuota(casaClave, TipoMercado.Ganador, null, resultado, valor);
 
-    public PartidoBuilder ConCuota(string casaClave, TipoMercado mercado, decimal? linea, ResultadoPartido resultado, decimal valor)
+    public PartidoBuilder ConCuota(string casaClave, TipoMercado mercado, decimal? linea, ResultadoCuota resultado, decimal valor)
     {
         _cuotas.Add(new Cuota
         {

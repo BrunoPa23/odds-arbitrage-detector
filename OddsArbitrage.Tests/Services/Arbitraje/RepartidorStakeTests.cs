@@ -11,9 +11,9 @@ public class RepartidorStakeTests
     // Cuotas con arbitraje claro: suma de probabilidades implicitas = 0.992063... < 1
     private static readonly IReadOnlyList<Cuota> MejoresCuotasConArbitraje =
     [
-        CuotaDePrueba.Crear(ResultadoPartido.Local, 2.10m),
-        CuotaDePrueba.Crear(ResultadoPartido.Empate, 3.60m),
-        CuotaDePrueba.Crear(ResultadoPartido.Visitante, 4.20m)
+        CuotaDePrueba.Crear(ResultadoCuota.Local, 2.10m),
+        CuotaDePrueba.Crear(ResultadoCuota.Empate, 3.60m),
+        CuotaDePrueba.Crear(ResultadoCuota.Visitante, 4.20m)
     ];
 
     [Fact]

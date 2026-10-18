@@ -38,11 +38,11 @@ internal static class OddsApiMapper
             };
     }
 
-    private static ResultadoPartido? AResultado(string nombre, EventDto evento) => nombre switch
+    private static ResultadoCuota? AResultado(string nombre, EventDto evento) => nombre switch
     {
-        _ when nombre == evento.HomeTeam => ResultadoPartido.Local,
-        _ when nombre == evento.AwayTeam => ResultadoPartido.Visitante,
-        NombreEmpate => ResultadoPartido.Empate,
+        _ when nombre == evento.HomeTeam => ResultadoCuota.Local,
+        _ when nombre == evento.AwayTeam => ResultadoCuota.Visitante,
+        NombreEmpate => ResultadoCuota.Empate,
         _ => null
     };
 }

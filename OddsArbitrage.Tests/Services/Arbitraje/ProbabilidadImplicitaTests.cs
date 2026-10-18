@@ -49,9 +49,9 @@ public class ProbabilidadImplicitaTests
         // Arrange
         var cuotas = new[]
         {
-            CuotaDePrueba.Crear(ResultadoPartido.Local, 2.00m),
-            CuotaDePrueba.Crear(ResultadoPartido.Empate, 4.00m),
-            CuotaDePrueba.Crear(ResultadoPartido.Visitante, 4.00m)
+            CuotaDePrueba.Crear(ResultadoCuota.Local, 2.00m),
+            CuotaDePrueba.Crear(ResultadoCuota.Empate, 4.00m),
+            CuotaDePrueba.Crear(ResultadoCuota.Visitante, 4.00m)
         };
 
         // Act

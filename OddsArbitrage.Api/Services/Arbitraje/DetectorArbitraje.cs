@@ -6,14 +6,14 @@ public sealed class DetectorArbitraje : IDetectorArbitraje
 {
     public const decimal StakePorDefecto = 100m;
 
-    private static readonly int CantidadResultados1X2 = Enum.GetValues<ResultadoPartido>().Length;
+    private static readonly IReadOnlyList<ResultadoCuota> Resultados1X2 = ResultadosPorMercado.De(TipoMercado.Ganador);
 
     public OportunidadArbitraje? Evaluar(Partido partido, decimal stakeTotal = StakePorDefecto)
     {
         var mejoresCuotas = SeleccionarMejoresCuotas(partido.Cuotas);
 
         // Si falta algun resultado no se puede cubrir el mercado completo, por lo tanto no hay arbitraje
-        if (mejoresCuotas.Count != CantidadResultados1X2)
+        if (mejoresCuotas.Count != Resultados1X2.Count)
         {
             return null;
         }
@@ -49,7 +49,7 @@ public sealed class DetectorArbitraje : IDetectorArbitraje
     // Solo cuenta el mercado ganador; totales y handicap tienen su propia logica
     private static List<Cuota> SeleccionarMejoresCuotas(IEnumerable<Cuota> cuotas)
         => cuotas
-            .Where(c => c.Mercado == TipoMercado.Ganador && c.Valor > 1m)
+            .Where(c => c.Mercado == TipoMercado.Ganador && Resultados1X2.Contains(c.Resultado) && c.Valor > 1m)
             .GroupBy(c => c.Resultado)
             .Select(g => g.MaxBy(c => c.Valor)!)
             .OrderBy(c => c.Resultado)
