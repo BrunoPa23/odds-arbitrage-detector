@@ -22,6 +22,8 @@ internal sealed record MarketDto(
     DateTimeOffset? LastUpdate,
     IReadOnlyList<OutcomeDto> Outcomes);
 
+// Point solo viene en totals (la linea de goles) y spreads (el handicap del equipo)
 internal sealed record OutcomeDto(
     string Name,
-    decimal Price);
+    decimal Price,
+    decimal? Point = null);

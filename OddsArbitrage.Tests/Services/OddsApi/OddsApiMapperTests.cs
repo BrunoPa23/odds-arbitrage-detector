@@ -81,7 +81,7 @@ public class OddsApiMapperTests
     }
 
     [Fact]
-    public void APartido_IgnoraMercadosQueNoSonH2H()
+    public void APartido_IgnoraMercadosNoSoportados()
     {
         // Arrange
         var evento = new EventDto(
@@ -100,9 +100,9 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: "totals",
+                            Key: "outrights",
                             LastUpdate: null,
-                            Outcomes: [new OutcomeDto("Over", 1.90m)])
+                            Outcomes: [new OutcomeDto("Equipo Local", 1.90m)])
                     ])
             ]);
 
