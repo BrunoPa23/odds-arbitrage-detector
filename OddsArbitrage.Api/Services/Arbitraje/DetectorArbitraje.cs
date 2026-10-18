@@ -18,24 +18,7 @@ public sealed class DetectorArbitraje : IDetectorArbitraje
             return null;
         }
 
-        var sumaProbabilidades = ProbabilidadImplicita.CalcularSuma(mejoresCuotas);
-        if (sumaProbabilidades >= 1m)
-        {
-            return null;
-        }
-
-        return new OportunidadArbitraje
-        {
-            PartidoId = partido.Id,
-            Liga = partido.Liga,
-            EquipoLocal = partido.EquipoLocal,
-            EquipoVisitante = partido.EquipoVisitante,
-            FechaInicio = partido.FechaInicio,
-            MejoresCuotas = mejoresCuotas,
-            SumaProbabilidadesImplicitas = Math.Round(sumaProbabilidades, 6),
-            MargenPorcentaje = Math.Round((1m / sumaProbabilidades - 1m) * 100m, 2),
-            Reparto = RepartidorStake.Calcular(mejoresCuotas, stakeTotal)
-        };
+        return ConstructorOportunidad.Crear(partido, TipoMercado.Ganador, linea: null, mejoresCuotas, stakeTotal);
     }
 
     public IReadOnlyList<OportunidadArbitraje> Detectar(IEnumerable<Partido> partidos, decimal stakeTotal = StakePorDefecto)
