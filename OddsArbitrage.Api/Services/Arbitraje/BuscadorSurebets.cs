@@ -10,7 +10,8 @@ public sealed class BuscadorSurebets(IEnumerable<IDetectorSurebets> detectores) 
     public IReadOnlyList<OportunidadArbitraje> Buscar(
         IEnumerable<Partido> partidos,
         TipoMercado? mercado = null,
-        decimal stakeTotal = IDetectorSurebets.StakePorDefecto)
+        decimal stakeTotal = IDetectorSurebets.StakePorDefecto,
+        decimal? margenMinimo = null)
     {
         var listaPartidos = partidos as IReadOnlyCollection<Partido> ?? partidos.ToList();
 
@@ -19,6 +20,7 @@ public sealed class BuscadorSurebets(IEnumerable<IDetectorSurebets> detectores) 
             .SelectMany(d => d.Detectar(listaPartidos, stakeTotal))
             // Un detector puede cubrir varios mercados, por eso se filtra tambien cada surebet
             .Where(o => mercado is null || o.Mercado == mercado)
+            .Where(o => margenMinimo is null || o.MargenPorcentaje >= margenMinimo)
             .OrderByDescending(o => o.MargenPorcentaje)
             .ToList();
     }

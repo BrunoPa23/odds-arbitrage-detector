@@ -63,6 +63,32 @@ public class BuscadorSurebetsTests
         Assert.Equal(esperada.MejoresCuotas, obtenida.MejoresCuotas);
     }
 
+    [Theory]
+    [InlineData(0, 3)]
+    [InlineData(2.79, 3)]
+    [InlineData(3, 2)]
+    [InlineData(5.26, 1)]
+    [InlineData(6, 0)]
+    public void Buscar_ConMargenMinimo_DescartaLasSurebetsDeMenorMargen(decimal margenMinimo, int esperadas)
+    {
+        // Act
+        var surebets = _buscador.Buscar([PartidoConSurebetsEnTodosLosMercados()], margenMinimo: margenMinimo);
+
+        // Assert
+        Assert.Equal(esperadas, surebets.Count);
+        Assert.All(surebets, s => Assert.True(s.MargenPorcentaje >= margenMinimo));
+    }
+
+    [Fact]
+    public void Buscar_ConMercadoYMargenMinimo_AplicaAmbosFiltros()
+    {
+        // Act: el handicap tiene 2.79 %, por debajo del minimo pedido
+        var surebets = _buscador.Buscar([PartidoConSurebetsEnTodosLosMercados()], TipoMercado.Handicap, margenMinimo: 3m);
+
+        // Assert
+        Assert.Empty(surebets);
+    }
+
     [Fact]
     public void Buscar_SinDetectoresDelMercado_DevuelveListaVacia()
     {

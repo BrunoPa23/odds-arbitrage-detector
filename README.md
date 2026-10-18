@@ -17,6 +17,7 @@ odds-arbitrage-detector/
 - **OddsArbitrage.Api**: consume cuotas reales de The Odds API, calcula probabilidad implicita por cuota, detecta arbitrajes en el mercado 1X2 y expone los endpoints:
   - `GET /api/partidos?deporte={clave}`: partidos y sus cuotas por casa de apuestas.
   - `GET /api/oportunidades?deporte={clave}&stake={monto}`: oportunidades de arbitraje detectadas, con el reparto de stake recomendado.
+  - `GET /api/surebets?deporte={clave}&mercado={Ganador|Totales|Handicap}&margenMinimo={porcentaje}&stake={monto}`: surebets de todos los mercados consultados (mercado y margenMinimo son opcionales).
 - **OddsArbitrage.Web**: consume esos endpoints y muestra filtros por deporte, la tabla de oportunidades (con detalle expandible del reparto) y el listado de partidos con sus cuotas.
 
 ## Como correr la API
