@@ -4,11 +4,13 @@ namespace OddsArbitrage.Api.Services.Arbitraje;
 
 // Detecta surebets en mercados de dos resultados: totales (mas o menos) y handicap (local o visitante).
 // Cada linea es un mercado independiente, por lo que un mismo partido puede tener varias surebets
-public sealed class DetectorDosResultados
+public sealed class DetectorDosResultados : IDetectorSurebets
 {
     private static readonly TipoMercado[] MercadosSoportados = [TipoMercado.Totales, TipoMercado.Handicap];
 
-    public IReadOnlyList<OportunidadArbitraje> Evaluar(Partido partido, decimal stakeTotal = DetectorArbitraje.StakePorDefecto)
+    public IReadOnlyCollection<TipoMercado> Mercados => MercadosSoportados;
+
+    public IReadOnlyList<OportunidadArbitraje> Evaluar(Partido partido, decimal stakeTotal = IDetectorSurebets.StakePorDefecto)
         => partido.Cuotas
             .Where(EsCuotaEvaluable)
             .GroupBy(c => (c.Mercado, Linea: LineaDelGrupo(c)))
@@ -18,7 +20,7 @@ public sealed class DetectorDosResultados
             .ThenBy(o => o.Linea)
             .ToList();
 
-    public IReadOnlyList<OportunidadArbitraje> Detectar(IEnumerable<Partido> partidos, decimal stakeTotal = DetectorArbitraje.StakePorDefecto)
+    public IReadOnlyList<OportunidadArbitraje> Detectar(IEnumerable<Partido> partidos, decimal stakeTotal = IDetectorSurebets.StakePorDefecto)
         => partidos
             .SelectMany(p => Evaluar(p, stakeTotal))
             .OrderByDescending(o => o.MargenPorcentaje)
