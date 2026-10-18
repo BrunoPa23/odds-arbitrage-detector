@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OddsArbitrage.Api.Services.OddsApi;
 
-public sealed class OddsApiOptions
+public sealed class OddsApiOptions : IValidatableObject
 {
     public const string Seccion = "TheOddsApi";
 
@@ -27,4 +27,31 @@ public sealed class OddsApiOptions
     // Tiempo que se reutiliza una respuesta antes de volver a consultar la API
     [Range(1, 1440)]
     public int MinutosCache { get; set; } = 30;
+
+    // Mercados a consultar (h2h, totals, spreads). Cada mercado extra multiplica el costo de cada llamada,
+    // por eso si la lista queda vacia solo se pide h2h. Arranca vacia porque el binder agrega a la lista existente
+    public List<string> Mercados { get; set; } = [];
+
+    // Mercados normalizados y sin repetir, listos para el parametro markets
+    public IReadOnlyList<string> MercadosAConsultar()
+    {
+        var mercados = Mercados
+            .Where(m => !string.IsNullOrWhiteSpace(m))
+            .Select(m => m.Trim().ToLowerInvariant())
+            .Distinct()
+            .ToList();
+
+        return mercados.Count > 0 ? mercados : [MercadosOddsApi.H2H];
+    }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var noSoportados = MercadosAConsultar().Except(MercadosOddsApi.Soportados).ToList();
+        if (noSoportados.Count > 0)
+        {
+            yield return new ValidationResult(
+                $"Mercados no soportados: {string.Join(", ", noSoportados)}. Validos: {string.Join(", ", MercadosOddsApi.Soportados)}",
+                [nameof(Mercados)]);
+        }
+    }
 }

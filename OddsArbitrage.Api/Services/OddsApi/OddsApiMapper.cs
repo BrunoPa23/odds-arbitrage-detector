@@ -4,7 +4,6 @@ namespace OddsArbitrage.Api.Services.OddsApi;
 
 internal static class OddsApiMapper
 {
-    public const string MercadoH2H = "h2h";
     private const string NombreEmpate = "Draw";
 
     public static Partido APartido(EventDto evento) => new()
@@ -25,7 +24,7 @@ internal static class OddsApiMapper
 
         return
             from mercado in bookmaker.Markets
-            where mercado.Key == MercadoH2H
+            where mercado.Key == MercadosOddsApi.H2H
             from outcome in mercado.Outcomes
             let resultado = AResultado(outcome.Name, evento)
             where resultado is not null

@@ -28,7 +28,7 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: OddsApiMapper.MercadoH2H,
+                            Key: MercadosOddsApi.H2H,
                             LastUpdate: null,
                             Outcomes:
                             [
@@ -44,7 +44,7 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: OddsApiMapper.MercadoH2H,
+                            Key: MercadosOddsApi.H2H,
                             LastUpdate: null,
                             Outcomes:
                             [
@@ -133,7 +133,7 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: OddsApiMapper.MercadoH2H,
+                            Key: MercadosOddsApi.H2H,
                             LastUpdate: null,
                             Outcomes:
                             [
@@ -172,7 +172,7 @@ public class OddsApiMapperTests
                     Markets:
                     [
                         new MarketDto(
-                            Key: OddsApiMapper.MercadoH2H,
+                            Key: MercadosOddsApi.H2H,
                             LastUpdate: actualizacionMercado,
                             Outcomes: [new OutcomeDto("Equipo Local", 2.10m)])
                     ])
