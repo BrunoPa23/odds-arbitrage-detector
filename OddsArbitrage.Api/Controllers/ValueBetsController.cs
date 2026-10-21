@@ -26,7 +26,7 @@ public class ValueBetsController(
     public async Task<ActionResult<IReadOnlyList<CuotaDesfasada>>> ObtenerValueBets(
         [FromQuery, RegularExpression("^[a-z0-9_]+$")] string? deporte,
         [FromQuery, EnumDataType(typeof(TipoMercado))] TipoMercado? mercado,
-        [FromQuery, Range(0, 100)] decimal? ventajaMinima,
+        [FromQuery, Range(typeof(decimal), "0", "100")] decimal? ventajaMinima,
         CancellationToken cancellationToken = default)
     {
         var opciones = options.Value;

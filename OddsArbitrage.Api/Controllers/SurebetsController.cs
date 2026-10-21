@@ -24,8 +24,8 @@ public class SurebetsController(
     public async Task<ActionResult<IReadOnlyList<OportunidadArbitraje>>> ObtenerSurebets(
         [FromQuery, RegularExpression("^[a-z0-9_]+$")] string? deporte,
         [FromQuery, EnumDataType(typeof(TipoMercado))] TipoMercado? mercado,
-        [FromQuery, Range(0, 100)] decimal? margenMinimo,
-        [FromQuery, Range(1, 1_000_000)] decimal stake = IDetectorSurebets.StakePorDefecto,
+        [FromQuery, Range(typeof(decimal), "0", "100")] decimal? margenMinimo,
+        [FromQuery, Range(typeof(decimal), "1", "1000000")] decimal stake = IDetectorSurebets.StakePorDefecto,
         CancellationToken cancellationToken = default)
     {
         var partidos = await oddsApiService.ObtenerPartidosAsync(deporte, cancellationToken);
