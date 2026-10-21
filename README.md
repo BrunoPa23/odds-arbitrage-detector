@@ -294,6 +294,6 @@ Cada consulta que no este en cache gasta cuota de The Odds API; no dejes la web 
 
 Desarrollo por sprints cortos (metodologia agil, backlog MoSCoW). MVP completo: backend con datos reales de The Odds API, algoritmo de deteccion de arbitraje, frontend en Angular que muestra las oportunidades y los partidos, tests unitarios con CI en GitHub Actions y arranque con Docker Compose.
 
-Fase de surebets y cuotas desfasadas completa: mercados totales y hándicap, detector de surebets por línea, consenso sin margen y detector de cuotas desfasadas, páginas nuevas en Angular, modo demo y tests de integración con `WebApplicationFactory`.
+Fase de surebets y cuotas desfasadas completa: mercados totales y hándicap, detector de surebets por línea, consenso sin margen y detector de cuotas desfasadas, páginas nuevas en Angular, modo demo y tests de integración con `WebApplicationFactory`. El detalle de versiones está en el [CHANGELOG](CHANGELOG.md).
 
 Pendiente: separación en capas (Clean Architecture ligera), histórico en base de datos, alertas en tiempo real (SignalR) y jobs automáticos en background.
