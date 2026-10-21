@@ -115,6 +115,8 @@ public class SurebetsEndpointTests(ApiDemoFactory factory) : IClassFixture<ApiDe
     [InlineData("/api/surebets?mercado=Corners")]
     [InlineData("/api/surebets?margenMinimo=150")]
     [InlineData("/api/surebets?margenMinimo=-1")]
+    [InlineData("/api/surebets?margenMinimo=100.5")]
+    [InlineData("/api/surebets?stake=0.6")]
     [InlineData("/api/surebets?stake=0")]
     [InlineData("/api/surebets?deporte=Futbol%20Ingles")]
     public async Task Get_ConParametrosInvalidos_Devuelve400(string url)

@@ -22,7 +22,7 @@ public class OportunidadesController(
     [ProducesResponseType(StatusCodes.Status504GatewayTimeout)]
     public async Task<ActionResult<IReadOnlyList<OportunidadArbitraje>>> ObtenerOportunidades(
         [FromQuery, RegularExpression("^[a-z0-9_]+$")] string? deporte,
-        [FromQuery, Range(1, 1_000_000)] decimal stake = IDetectorSurebets.StakePorDefecto,
+        [FromQuery, Range(typeof(decimal), "1", "1000000")] decimal stake = IDetectorSurebets.StakePorDefecto,
         CancellationToken cancellationToken = default)
     {
         var partidos = await oddsApiService.ObtenerPartidosAsync(deporte, cancellationToken);

@@ -81,6 +81,7 @@ public class ValueBetsEndpointTests(ApiDemoFactory factory) : IClassFixture<ApiD
     [Theory]
     [InlineData("-1")]
     [InlineData("101")]
+    [InlineData("100.5")]
     [InlineData("abc")]
     public async Task Get_ConVentajaMinimaFueraDeRangoOInvalida_Devuelve400(string ventajaMinima)
     {
