@@ -1,0 +1,96 @@
+<section class="pagina">
+  <header>
+    <h1>Cuotas desfasadas</h1>
+    <p class="descripcion">
+      Cuotas que pagan mas de lo que vale el resultado segun el consenso sin margen de las casas.
+      No es ganancia garantizada: es una ventaja esperada a largo plazo.
+    </p>
+  </header>
+
+  <div class="filtros">
+    <label>
+      <span>Deporte</span>
+      <select [(ngModel)]="deporte" name="deporte">
+        @for (opcion of deportes; track opcion.clave) {
+          <option [value]="opcion.clave">{{ opcion.nombre }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span>Mercado</span>
+      <select [(ngModel)]="mercado" name="mercado">
+        <option [ngValue]="null">Todos</option>
+        @for (opcion of mercados; track opcion.valor) {
+          <option [ngValue]="opcion.valor">{{ opcion.nombre }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span>Ventaja minima (%)</span>
+      <input
+        type="number"
+        min="0"
+        max="100"
+        step="0.5"
+        placeholder="Por defecto"
+        [(ngModel)]="ventajaMinima"
+        name="ventajaMinima"
+      />
+    </label>
+
+    <button type="button" [disabled]="cargando()" (click)="onBuscar()">Buscar</button>
+  </div>
+
+  @if (cargando()) {
+    <p class="estado estado--cargando">Buscando cuotas desfasadas...</p>
+  } @else if (error()) {
+    <p class="estado estado--error">{{ error() }}</p>
+  } @else if (!haBuscado()) {
+    <p class="estado">Elegi los filtros y presiona "Buscar".</p>
+  } @else if (cuotas().length === 0) {
+    <p class="estado estado--vacio">No hay cuotas desfasadas con estos filtros en este momento.</p>
+  } @else {
+    <table class="tabla-cuotas">
+      <thead>
+        <tr>
+          <th>Partido</th>
+          <th>Fecha</th>
+          <th>Mercado</th>
+          <th>Resultado</th>
+          <th>Casa</th>
+          <th>Cuota</th>
+          <th>Cuota justa</th>
+          <th>Prob. justa</th>
+          <th>Ventaja</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cuota of cuotas(); track clave(cuota)) {
+          <tr class="fila-cuota">
+            <td>
+              {{ cuota.equipoLocal }} vs {{ cuota.equipoVisitante }}
+              <span class="liga">{{ cuota.liga }}</span>
+            </td>
+            <td>{{ cuota.fechaInicio | date: 'short' }}</td>
+            <td>{{ cuota.mercado | mercado }}</td>
+            <td>{{ cuota.resultado | resultado: cuota.mercado : cuota.linea }}</td>
+            <td>{{ cuota.casa.nombre }}</td>
+            <td class="valor">{{ cuota.valor | number: '1.2-2' }}</td>
+            <td>{{ cuota.cuotaJusta | number: '1.2-3' }}</td>
+            <td>
+              {{ cuota.probabilidadJusta | percent: '1.1-1' }}
+              <span class="casas">{{ cuota.casasConsenso }} casas</span>
+            </td>
+            <td>
+              <span [class]="claseVentaja(cuota.ventajaPorcentaje)"
+                >+{{ cuota.ventajaPorcentaje | number: '1.2-2' }}%</span
+              >
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
