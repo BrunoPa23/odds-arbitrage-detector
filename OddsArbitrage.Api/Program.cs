@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using OddsArbitrage.Api.Filters;
 using OddsArbitrage.Api.Services.Arbitraje;
 using OddsArbitrage.Api.Services.OddsApi;
+using OddsArbitrage.Api.Services.ValueBets;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,12 @@ builder.Services
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+builder.Services
+    .AddOptions<ValueBetsOptions>()
+    .Bind(builder.Configuration.GetSection(ValueBetsOptions.Seccion))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 // Sin politica de reintentos a proposito: cada reintento gasta cuota de la API
 builder.Services.AddHttpClient<OddsApiService>((sp, client) =>
 {
@@ -40,6 +47,7 @@ builder.Services.AddScoped<IOddsApiService, OddsApiServiceConCache>();
 builder.Services.AddSingleton<IDetectorSurebets, DetectorArbitraje>();
 builder.Services.AddSingleton<IDetectorSurebets, DetectorDosResultados>();
 builder.Services.AddSingleton<IBuscadorSurebets, BuscadorSurebets>();
+builder.Services.AddSingleton<IDetectorCuotasDesfasadas, DetectorCuotasDesfasadas>();
 
 builder.Services.AddControllers(o => o.Filters.Add<OddsApiExceptionFilter>())
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
