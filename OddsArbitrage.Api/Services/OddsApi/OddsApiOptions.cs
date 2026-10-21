@@ -9,9 +9,11 @@ public sealed class OddsApiOptions : IValidatableObject
     [Required, Url]
     public string BaseUrl { get; set; } = "https://api.the-odds-api.com/";
 
-    // Se configura con user-secrets, nunca en appsettings.json
-    [Required]
+    // Se configura con user-secrets, nunca en appsettings.json. Es obligatoria salvo en modo demo
     public string ApiKey { get; set; } = string.Empty;
+
+    // Con true la API sirve partidos de ejemplo (Datos/cuotas-demo.json) y nunca llama a The Odds API
+    public bool ModoDemo { get; set; }
 
     // Cada region extra multiplica el costo de cada llamada; mantener una sola
     [Required]
@@ -46,6 +48,13 @@ public sealed class OddsApiOptions : IValidatableObject
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
+        if (!ModoDemo && string.IsNullOrWhiteSpace(ApiKey))
+        {
+            yield return new ValidationResult(
+                "Falta TheOddsApi:ApiKey. Configurala con user-secrets o activa TheOddsApi:ModoDemo para usar datos de ejemplo",
+                [nameof(ApiKey)]);
+        }
+
         var noSoportados = MercadosAConsultar().Except(MercadosOddsApi.Soportados).ToList();
         if (noSoportados.Count > 0)
         {

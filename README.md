@@ -52,6 +52,22 @@ El plan gratuito de The Odds API tiene un limite de 500 requests al mes; el serv
 
 Los origenes permitidos por CORS para el frontend se configuran en `appsettings.json`, bajo `Cors:OrigenesPermitidos` (por defecto incluye `http://localhost:4200`).
 
+### Modo demo (sin API key)
+
+Con `TheOddsApi:ModoDemo=true` la API sirve partidos ficticios de `OddsArbitrage.Api/Datos/cuotas-demo.json` (5 ligas, 5 casas, mercados h2h, totals y spreads) en lugar de llamar a The Odds API: no necesita API key y no gasta cuota. Por defecto esta apagado.
+
+```bash
+cd OddsArbitrage.Api
+dotnet run --launch-profile demo
+```
+
+O, como variable de entorno:
+
+```bash
+# PowerShell
+$env:TheOddsApi__ModoDemo = "true"
+```
+
 ## Como correr el frontend
 
 Requisitos: Node.js LTS.
@@ -80,7 +96,7 @@ npm test
 
 Requisitos: Docker con Docker Compose.
 
-1. Copia `.env.example` como `.env` y pon tu API key de The Odds API (el archivo `.env` no se sube al repositorio).
+1. Copia `.env.example` como `.env` y pon tu API key de The Odds API (el archivo `.env` no se sube al repositorio). Para probar sin API key, pon `MODO_DEMO=true` en el `.env` o levanta el stack con `MODO_DEMO=true docker compose up --build`.
 2. Levanta la API y la web:
 
 ```bash
