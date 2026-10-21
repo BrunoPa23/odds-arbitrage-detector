@@ -11,9 +11,8 @@ public sealed class DetectorDosResultados : IDetectorSurebets
     public IReadOnlyCollection<TipoMercado> Mercados => MercadosSoportados;
 
     public IReadOnlyList<OportunidadArbitraje> Evaluar(Partido partido, decimal stakeTotal = IDetectorSurebets.StakePorDefecto)
-        => partido.Cuotas
-            .Where(EsCuotaEvaluable)
-            .GroupBy(c => (c.Mercado, Linea: LineaDelGrupo(c)))
+        => LineasDeMercado.Agrupar(partido.Cuotas)
+            .Where(grupo => MercadosSoportados.Contains(grupo.Key.Mercado))
             .Select(grupo => EvaluarLinea(partido, grupo.Key.Mercado, grupo.Key.Linea, grupo, stakeTotal))
             .OfType<OportunidadArbitraje>()
             .OrderBy(o => o.Mercado)
@@ -26,27 +25,9 @@ public sealed class DetectorDosResultados : IDetectorSurebets
             .OrderByDescending(o => o.MargenPorcentaje)
             .ToList();
 
-    // En totales ambos lados comparten la linea (mas de 2.5 contra menos de 2.5). En handicap el visitante
-    // tiene la linea opuesta (local -1.5 se cubre con visitante +1.5), por eso el grupo usa la linea del local
-    internal static decimal LineaDelGrupo(Cuota cuota)
-    {
-        var linea = cuota.Mercado == TipoMercado.Handicap && cuota.Resultado == ResultadoCuota.Visitante
-            ? -cuota.Linea!.Value
-            : cuota.Linea!.Value;
-
-        // Evita el cero negativo para que la linea 0 se agrupe y se serialice siempre igual
-        return linea == 0m ? 0m : linea;
-    }
-
-    private static bool EsCuotaEvaluable(Cuota cuota)
-        => MercadosSoportados.Contains(cuota.Mercado)
-           && cuota.Linea is not null
-           && cuota.Valor > 1m
-           && ResultadosPorMercado.EsValido(cuota.Mercado, cuota.Resultado);
-
     // Toma la mejor cuota de cada lado entre todas las casas; si falta un lado no se cubre el mercado
     private static OportunidadArbitraje? EvaluarLinea(
-        Partido partido, TipoMercado mercado, decimal linea, IEnumerable<Cuota> cuotas, decimal stakeTotal)
+        Partido partido, TipoMercado mercado, decimal? linea, IEnumerable<Cuota> cuotas, decimal stakeTotal)
     {
         var mejoresCuotas = cuotas
             .GroupBy(c => c.Resultado)

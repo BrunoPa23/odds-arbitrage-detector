@@ -11,3 +11,9 @@ GET {{OddsArbitrage.Api_HostAddress}}/api/surebets?deporte=soccer_epl&mercado=To
 Accept: application/json
 
 ###
+
+# Reutiliza la cache de partidos; sin ventajaMinima usa ValueBets:VentajaMinimaPorcentaje
+GET {{OddsArbitrage.Api_HostAddress}}/api/value-bets?deporte=soccer_epl&mercado=Ganador&ventajaMinima=3
+Accept: application/json
+
+###
