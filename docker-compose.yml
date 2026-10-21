@@ -3,7 +3,9 @@ services:
   api:
     build: ./OddsArbitrage.Api
     environment:
-      TheOddsApi__ApiKey: ${ODDS_API_KEY:?Define ODDS_API_KEY en el archivo .env (ver .env.example)}
+      # Con MODO_DEMO=true la API sirve datos de ejemplo y no necesita ODDS_API_KEY
+      TheOddsApi__ApiKey: ${ODDS_API_KEY:-}
+      TheOddsApi__ModoDemo: ${MODO_DEMO:-false}
     ports:
       - "5162:8080"
     restart: unless-stopped

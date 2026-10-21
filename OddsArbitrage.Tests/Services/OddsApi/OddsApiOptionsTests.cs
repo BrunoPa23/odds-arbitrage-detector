@@ -53,4 +53,33 @@ public class OddsApiOptionsTests
         // Assert
         Assert.True(esValido);
     }
+
+    [Fact]
+    public void Validar_SinApiKeyFueraDelModoDemo_DevuelveError()
+    {
+        // Arrange
+        var opciones = new OddsApiOptions();
+        var resultados = new List<ValidationResult>();
+
+        // Act
+        var esValido = Validator.TryValidateObject(opciones, new ValidationContext(opciones), resultados, validateAllProperties: true);
+
+        // Assert
+        Assert.False(esValido);
+        var error = Assert.Single(resultados);
+        Assert.Contains(nameof(OddsApiOptions.ApiKey), error.MemberNames);
+    }
+
+    [Fact]
+    public void Validar_SinApiKeyEnModoDemo_EsValido()
+    {
+        // Arrange
+        var opciones = new OddsApiOptions { ModoDemo = true };
+
+        // Act
+        var esValido = Validator.TryValidateObject(opciones, new ValidationContext(opciones), [], validateAllProperties: true);
+
+        // Assert
+        Assert.True(esValido);
+    }
 }

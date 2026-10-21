@@ -43,7 +43,14 @@ builder.Services.AddHttpClient<OddsApiService>((sp, client) =>
 });
 
 builder.Services.AddMemoryCache();
-builder.Services.AddScoped<IOddsApiService, OddsApiServiceConCache>();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddScoped<OddsApiServiceConCache>();
+builder.Services.AddSingleton<OddsApiServiceDemo>();
+// Con TheOddsApi:ModoDemo=true se sirven datos de ejemplo y nunca se llama a The Odds API
+builder.Services.AddScoped<IOddsApiService>(sp =>
+    sp.GetRequiredService<IOptions<OddsApiOptions>>().Value.ModoDemo
+        ? sp.GetRequiredService<OddsApiServiceDemo>()
+        : sp.GetRequiredService<OddsApiServiceConCache>());
 builder.Services.AddSingleton<IDetectorSurebets, DetectorArbitraje>();
 builder.Services.AddSingleton<IDetectorSurebets, DetectorDosResultados>();
 builder.Services.AddSingleton<IBuscadorSurebets, BuscadorSurebets>();
@@ -55,6 +62,11 @@ builder.Services.AddControllers(o => o.Filters.Add<OddsApiExceptionFilter>())
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+if (app.Services.GetRequiredService<IOptions<OddsApiOptions>>().Value.ModoDemo)
+{
+    app.Logger.LogWarning("Modo demo activo: se sirven partidos de ejemplo y no se consulta The Odds API");
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

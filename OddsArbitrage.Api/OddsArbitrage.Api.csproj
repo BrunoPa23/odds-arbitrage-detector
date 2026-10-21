@@ -12,6 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Fixture del modo demo: va embebido en el ensamblado y no se copia como contenido -->
+    <Content Remove="Datos\cuotas-demo.json" />
+    <EmbeddedResource Include="Datos\cuotas-demo.json" LogicalName="cuotas-demo.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="OddsArbitrage.Tests" />
   </ItemGroup>
 

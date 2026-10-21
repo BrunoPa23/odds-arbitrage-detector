@@ -30,8 +30,8 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     env:
-      # Clave falsa: el job nunca llama a The Odds API, solo la necesita para arrancar
-      ODDS_API_KEY: sin-clave-en-ci
+      # Modo demo: la API sirve datos de ejemplo, no necesita clave y nunca llama a The Odds API
+      MODO_DEMO: 'true'
 
     steps:
       - name: Checkout del repositorio
@@ -56,6 +56,9 @@ jobs:
           done
           echo "HTTP $code"
           test "$code" = "404"
+
+      - name: Verificar surebets en modo demo
+        run: curl -fsS http://localhost:8080/api/surebets | grep -q '"margenPorcentaje"'
 
       - name: Logs de los contenedores
         if: failure()
