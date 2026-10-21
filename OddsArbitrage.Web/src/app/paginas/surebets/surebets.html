@@ -1,0 +1,129 @@
+<section class="pagina">
+  <header>
+    <h1>Surebets</h1>
+    <p class="descripcion">
+      Combinaciones de cuotas de distintas casas que cubren todos los resultados de un mercado y
+      ganan pase lo que pase.
+    </p>
+  </header>
+
+  <div class="filtros">
+    <label>
+      <span>Deporte</span>
+      <select [(ngModel)]="deporte" name="deporte">
+        @for (opcion of deportes; track opcion.clave) {
+          <option [value]="opcion.clave">{{ opcion.nombre }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span>Mercado</span>
+      <select [(ngModel)]="mercado" name="mercado">
+        <option [ngValue]="null">Todos</option>
+        @for (opcion of mercados; track opcion.valor) {
+          <option [ngValue]="opcion.valor">{{ opcion.nombre }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span>Margen minimo (%)</span>
+      <input
+        type="number"
+        min="0"
+        max="100"
+        step="0.1"
+        placeholder="Sin minimo"
+        [(ngModel)]="margenMinimo"
+        name="margenMinimo"
+      />
+    </label>
+
+    <label>
+      <span>Stake total</span>
+      <input type="number" min="1" step="1" [(ngModel)]="stake" name="stake" />
+    </label>
+
+    <button type="button" [disabled]="cargando()" (click)="onBuscar()">Buscar</button>
+  </div>
+
+  @if (cargando()) {
+    <p class="estado estado--cargando">Buscando surebets...</p>
+  } @else if (error()) {
+    <p class="estado estado--error">{{ error() }}</p>
+  } @else if (!haBuscado()) {
+    <p class="estado">Elegi los filtros y presiona "Buscar".</p>
+  } @else if (surebets().length === 0) {
+    <p class="estado estado--vacio">No hay surebets con estos filtros en este momento.</p>
+  } @else {
+    <table class="tabla-surebets">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Partido</th>
+          <th>Fecha</th>
+          <th>Mercado</th>
+          <th>Linea</th>
+          <th>Margen</th>
+          <th>Ganancia</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (surebet of surebets(); track clave(surebet)) {
+          <tr class="fila-surebet" (click)="alternarExpansion(surebet)">
+            <td class="fila-surebet__icono">{{ estaExpandida(surebet) ? '-' : '+' }}</td>
+            <td>
+              {{ surebet.equipoLocal }} vs {{ surebet.equipoVisitante }}
+              <span class="liga">{{ surebet.liga }}</span>
+            </td>
+            <td>{{ surebet.fechaInicio | date: 'short' }}</td>
+            <td>{{ surebet.mercado | mercado }}</td>
+            <td>{{ surebet.linea | linea: surebet.mercado }}</td>
+            <td>
+              <span [class]="claseMargen(surebet.margenPorcentaje)"
+                >{{ surebet.margenPorcentaje | number: '1.2-2' }}%</span
+              >
+            </td>
+            <td>{{ surebet.reparto.gananciaGarantizada | currency: 'USD' }}</td>
+          </tr>
+          @if (estaExpandida(surebet)) {
+            <tr class="fila-detalle">
+              <td [attr.colspan]="7">
+                <table class="tabla-reparto">
+                  <thead>
+                    <tr>
+                      <th>Resultado</th>
+                      <th>Casa</th>
+                      <th>Cuota</th>
+                      <th>Stake</th>
+                      <th>Retorno</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (apuesta of surebet.reparto.apuestas; track apuesta.cuota.resultado) {
+                      <tr>
+                        <td>
+                          {{ apuesta.cuota.resultado | resultado: apuesta.cuota.mercado : apuesta.cuota.linea }}
+                        </td>
+                        <td>{{ apuesta.cuota.casa.nombre }}</td>
+                        <td>{{ apuesta.cuota.valor | number: '1.2-2' }}</td>
+                        <td>{{ apuesta.stake | currency: 'USD' }}</td>
+                        <td>{{ apuesta.retorno | currency: 'USD' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+                <p class="ganancia-garantizada">
+                  Ganancia garantizada: {{ surebet.reparto.gananciaGarantizada | currency: 'USD' }}
+                  (retorno garantizado {{ surebet.reparto.retornoGarantizado | currency: 'USD' }} sobre
+                  un stake de {{ surebet.reparto.stakeTotal | currency: 'USD' }})
+                </p>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  }
+</section>

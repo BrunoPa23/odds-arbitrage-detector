@@ -22,4 +22,13 @@ describe('App', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.app__titulo')?.textContent).toContain('Odds Arbitrage Detector');
   });
+
+  it('deberia enlazar las paginas de surebets y cuotas desfasadas', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const enlaces = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLAnchorElement>('.app__nav a'),
+    ).map((a) => a.getAttribute('href'));
+    expect(enlaces).toEqual(['/oportunidades', '/surebets', '/cuotas-desfasadas', '/partidos']);
+  });
 });

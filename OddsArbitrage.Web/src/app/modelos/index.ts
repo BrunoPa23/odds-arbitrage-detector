@@ -5,3 +5,4 @@ export * from './cuota';
 export * from './partido';
 export * from './reparto-stake';
 export * from './oportunidad-arbitraje';
+export * from './cuota-desfasada';

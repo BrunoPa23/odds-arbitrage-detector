@@ -19,7 +19,7 @@ odds-arbitrage-detector/
   - `GET /api/oportunidades?deporte={clave}&stake={monto}`: oportunidades de arbitraje detectadas, con el reparto de stake recomendado.
   - `GET /api/surebets?deporte={clave}&mercado={Ganador|Totales|Handicap}&margenMinimo={porcentaje}&stake={monto}`: surebets de todos los mercados consultados (mercado y margenMinimo son opcionales).
   - `GET /api/value-bets?deporte={clave}&mercado={Ganador|Totales|Handicap}&ventajaMinima={porcentaje}`: cuotas desfasadas contra el consenso sin margen de las casas (mercado y ventajaMinima son opcionales; por defecto 3 % y al menos 3 casas, configurable en la seccion `ValueBets`).
-- **OddsArbitrage.Web**: consume esos endpoints y muestra filtros por deporte, la tabla de oportunidades (con detalle expandible del reparto) y el listado de partidos con sus cuotas.
+- **OddsArbitrage.Web**: consume esos endpoints y muestra filtros por deporte, la tabla de oportunidades (con detalle expandible del reparto), la pagina de surebets (filtro por mercado y margen minimo), la de cuotas desfasadas (filtro por mercado y ventaja minima) y el listado de partidos con sus cuotas. Las paginas solo consultan la API al presionar Buscar.
 
 ## Como correr la API
 

@@ -1,0 +1,128 @@
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.descripcion {
+  margin: 0;
+  color: var(--color-texto-tenue);
+  font-size: 0.9rem;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+  }
+
+  input[type='number'] {
+    width: 9rem;
+  }
+
+  button {
+    height: 2.4rem;
+    padding: 0 1.25rem;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: wait;
+    }
+  }
+}
+
+.estado {
+  padding: 1rem;
+  opacity: 0.8;
+
+  &--error {
+    color: var(--color-error);
+    opacity: 1;
+  }
+}
+
+.tabla-surebets {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+}
+
+.fila-surebet {
+  cursor: pointer;
+
+  td {
+    padding: 0.6rem 0.75rem;
+    border-top: 1px solid var(--color-borde);
+  }
+
+  &__icono {
+    width: 1.5rem;
+    text-align: center;
+    opacity: 0.6;
+  }
+}
+
+.liga {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-texto-tenue);
+}
+
+.fila-detalle td {
+  padding: 0 0.75rem 1rem 2.25rem;
+}
+
+.tabla-reparto {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}
+
+.ganancia-garantizada {
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  &--alto {
+    background: var(--color-margen-alto-bg);
+    color: var(--color-margen-alto-fg);
+  }
+
+  &--medio {
+    background: var(--color-margen-medio-bg);
+    color: var(--color-margen-medio-fg);
+  }
+
+  &--bajo {
+    background: var(--color-margen-bajo-bg);
+    color: var(--color-margen-bajo-fg);
+  }
+}
