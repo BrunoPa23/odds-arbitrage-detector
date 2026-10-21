@@ -28,6 +28,22 @@ odds-arbitrage-detector/
   - `GET /api/value-bets?deporte={clave}&mercado={Ganador|Totales|Handicap}&ventajaMinima={porcentaje}`: cuotas desfasadas contra el consenso sin margen de las casas (mercado y ventajaMinima son opcionales; por defecto 3 % y al menos 3 casas, configurable en la seccion `ValueBets`).
 - **OddsArbitrage.Web**: consume esos endpoints y muestra filtros por deporte, la tabla de oportunidades (con detalle expandible del reparto), la pagina de surebets (filtro por mercado y margen minimo), la de cuotas desfasadas (filtro por mercado y ventaja minima) y el listado de partidos con sus cuotas. Las paginas solo consultan la API al presionar Buscar.
 
+## Capturas
+
+Tomadas con la API en modo demo (datos ficticios).
+
+**Surebets**: una surebet por mercado (totales, ganador y hándicap) con la fila de totales expandida mostrando el reparto de un stake de 100 entre AndesBet y Golazo Apuestas.
+
+![Página de surebets](docs/capturas/surebets.png)
+
+**Cuotas desfasadas**: cuotas por encima del consenso sin margen, con la cuota justa, la probabilidad justa, las casas del consenso y la ventaja esperada.
+
+![Página de cuotas desfasadas](docs/capturas/cuotas-desfasadas.png)
+
+**Oportunidades (1X2)**: la página del MVP con el reparto del arbitraje en el mercado ganador.
+
+![Página de oportunidades](docs/capturas/oportunidades.png)
+
 ## Cómo funciona: surebets y cuotas desfasadas
 
 Todas las cuotas están en formato decimal: una cuota de 2.50 paga 2.50 por cada 1 apostado (incluido el stake).
